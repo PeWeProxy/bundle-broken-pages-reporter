@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plugin SYSTEM "PluginConfiguration.dtd">
+<plugin>
+	<name>BrokenPageReporterProcessingPlugin</name>
+	<classLocation/>
+	<className>sk.fiit.rabbit.adaptiveproxy.plugins.services.reporter.BrokenPageReporterProcessingPlugin</className>
+	<libraries>
+    	
+  	</libraries>
+	<types>
+		<type>RequestProcessingPlugin</type>
+		<type>ResponseProcessingPlugin</type>
+	</types>
+	<parameters>
+		<param name="bypassPattern">adaptive-proxy/reporter_call</param>
+		<param name="generateResponse">true</param>
+		<param name="defaultVisibility">0</param>
+		<param name="pacGeneratorUrl">${plugins-core:baseurl}/sk/broken_page/generate_pac</param>
+		<param name="scriptUrl">${plugins-core:proxyurl}/FileSender/public/peweproxy_reporter.js</param>
+				<param name="menuWindowHTML">
+<![CDATA[
+
+<style type="text/css">
+			
+			a.__peweproxy_reporter_button{
+				background-image:url("${plugins-core:proxyurl}/FileSender/public/reporterImages/warning.png");
+				color:#2F2F2F;
+				display:block;
+				font-size:10px;
+				height:19px;
+				margin-left:6px;
+				margin-top:2px;
+				padding-left:0;
+				padding-top:1px;
+				text-align:center;
+				text-decoration:none;
+				width:20px;
+				float: left;
+			}
+			
+			div#peweproxy_addons_container div#peweproxy_reporter{
+				position:absolute;
+				right: 0;
+				top: 0;
+				width: 332px;
+			}
+
+			div.__peweproxy_reporter_head{
+				height: 25px;
+				width: 332px;
+				background-image: url('${plugins-core:proxyurl}/FileSender/public/clientBubbleMenuImages/panel_top.png');
+				float: left;
+			}
+
+			div.__peweproxy_reporter_body{
+				background-image:url("${plugins-core:proxyurl}/FileSender/public/clientBubbleMenuImages/panel_body.png");
+				float:left;
+				padding:0 20px 0 16px;
+				width:296px;
+				height: 151px;
+			}
+
+			div.__peweproxy_reporter_foot{
+				height: 16px;
+				width: 332px;
+				background-image: url('${plugins-core:proxyurl}/FileSender/public/clientBubbleMenuImages/panel_bottom.png');
+				float: left;
+			}
+
+			a.__peweproxy_reporter_closebutton{
+				display: block;
+				position: absolute;
+				right: 1px;
+				top: 1px;
+				height: 22px;
+				width: 22px;
+				background-image: url('${plugins-core:proxyurl}/FileSender/public/clientBubbleMenuImages/close_button.png');
+				background-position: top;
+			}
+			
+			div#peweproxy_addons_container span.header{
+				background-position:left center;
+				background-repeat:no-repeat;
+				display:block;
+				font-size:17px;
+				height:22px;
+				margin-top:-5px;
+				padding-left:30px;
+			}
+			
+			div#peweproxy_reporter span.header{
+				background-image:url("${plugins-core:proxyurl}/FileSender/public/reporterImages/warning.png");
+			}
+			
+			div#peweproxy_statusTrue{
+				display: none;
+			}
+			div#peweproxy_statusFalse{
+				
+			}
+			
+			div.peweproxy_statusTrueWrapper{
+				height: 100px;
+				margin-top: 11px;
+			}
+			div.peweproxy_statusFalseWrapper{
+				position:relative;
+				top: -100px;
+			}
+			
+			a.submit{
+				text-align: center;
+			}
+			div.peweproxy_buttonWrapper{
+				text-align: center;
+				margin-top: 11px;
+			}
+			div#peweproxy_reporter a.submit{
+				background-color:#FFF993;
+				border:1px solid #78731E;
+				color:#2F2F2F;
+				margin-left: 5px;
+				margin-right: 5px;
+				margin-top: 15px;
+				margin-top:2px;
+				padding:1px 5px;
+				text-decoration:none;
+			}
+
+		</style>
+
+
+			<div id="peweproxy_reporter" style="display:none">
+				<div class="__peweproxy_reporter_head">
+					<a class="__peweproxy_reporter_closebutton" href="#"></a>
+				</div>
+
+				<div class="__peweproxy_reporter_body">
+					<span class="header">
+						<span class="left_floated">Nahlasovanie nefunkčnej stránky</span>
+					</span>
+					<div class="peweproxy_statusTrueWrapper">
+						<div id="peweproxy_statusTrue" class="peweproxy_reporterContent">
+	Táto stránka bola nahlásená ako nefunkčná. Zmeny sa prejavia pri najbližšom reštarte prehliadača. <br />
+							<div class="peweproxy_buttonWrapper">
+								<a href="#" id="peweproxy_reporter_cancel_button" class="submit">Zavrieť</a>
+							</div>
+						</div>
+					</div>
+					<div class="peweproxy_statusFalseWrapper">
+						<div id="peweproxy_statusFalse" class="peweproxy_reporterContent">
+							
+	Kliknutím na tlačidlo OK nahlásite túto stránku ako nefunkčnú. Stránky prosím nahlasujte iba v prípade narušenia dizajnu alebo funkčnosti proxy-serverom.<br />
+	Zmeny po nahlásení sa prejavia po najbližšom reštarte prehliadača.
+							<div class="peweproxy_buttonWrapper">
+								<a href="#" id="peweproxy_reporter_confirm_button" class="submit">Potvrdiť</a>
+								<a href="#" id="peweproxy_reporter_cancel_button" class="submit">Zrušiť</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="__peweproxy_reporter_foot"></div>
+			</div>
+]]>
+		</param>
+		<param name="menuButtonHTML">
+<![CDATA[
+	<a href="#" class="__peweproxy_reporter_button"></a>
+]]>
+		</param>
+		</parameters>
+</plugin>
