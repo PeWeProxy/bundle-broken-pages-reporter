@@ -78,6 +78,10 @@
 				background-position: top;
 			}
 			
+			a.__peweproxy_reporter_closebutton:hover{
+				background-position: bottom;
+			}
+			
 			div#peweproxy_addons_container span.header{
 				background-position:left center;
 				background-repeat:no-repeat;
