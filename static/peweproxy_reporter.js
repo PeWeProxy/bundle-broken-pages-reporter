@@ -13,15 +13,12 @@ var temp = function($) {
           
           
           $(reporterButonSelector).click(function(){
-              //$(this).blur();
-              //renewSmallButton = false;
           	$('#peweproxy_reporter').hide().removeClass('hidden').fadeIn('fast');
               
               return false;
           });
           $('div#peweproxy_reporter a.__peweproxy_reporter_closebutton').click(function(){
               $(this).blur();
-              //renewSmallButton = true;
               $('#peweproxy_reporter').fadeOut('fast');
               return false;
           });
@@ -69,16 +66,4 @@ function getReportedStatus(){
       });
     } (adaptiveProxyJQuery);
   return retVal;
-}
-
-function setShown(shown){
-    var temp = function($) {
-      __ap_register_callback(function(){
-        shown = shown ? 1 : 0;
-        $.post(peweproxy_url_reporter+'?action=setShown', {
-            shown: shown,
-            uid: __peweproxy_uid
-        });
-      });
-    } (adaptiveProxyJQuery);
 }
