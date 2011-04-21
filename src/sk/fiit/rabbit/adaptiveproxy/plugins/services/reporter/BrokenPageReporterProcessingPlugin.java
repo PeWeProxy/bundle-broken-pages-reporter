@@ -27,12 +27,10 @@ import sk.fiit.peweproxy.services.content.ModifiableStringService;
 import sk.fiit.peweproxy.services.content.StringContentService;
 import sk.fiit.rabbit.adaptiveproxy.plugins.servicedefinitions.DatabaseConnectionProviderService;
 import sk.fiit.rabbit.adaptiveproxy.plugins.servicedefinitions.PageInformationProviderService;
+import sk.fiit.rabbit.adaptiveproxy.plugins.services.bubble.BubbleMenuProcessingPlugin;
 import sk.fiit.rabbit.adaptiveproxy.plugins.services.common.SqlUtils;
-import sk.fiit.rabbit.adaptiveproxy.plugins.services.injector.ClientBubbleMenuProcessingPlugin;
 
-
-
-public class BrokenPageReporterProcessingPlugin  extends ClientBubbleMenuProcessingPlugin {
+public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlugin {
 	
 	String pacGeneratorUrl = "";
 	

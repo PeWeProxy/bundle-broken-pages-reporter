@@ -17,7 +17,8 @@
 		<param name="defaultVisibility">0</param>
 		<param name="pacGeneratorUrl">${plugins-core:baseurl}/sk/broken_page/generate_pac</param>
 		<param name="scriptUrl">${plugins-core:proxyurl}/FileSender/public/peweproxy_reporter.js</param>
-				<param name="menuWindowHTML">
+		<param name="buttonHTML"><![CDATA[<a href="#" class="__peweproxy_reporter_button"></a>]]></param>
+		<param name="windowHTML">
 <![CDATA[
 
 <style type="text/css">
@@ -166,11 +167,6 @@
 				<div class="__peweproxy_reporter_foot"></div>
 			</div>
 ]]>
-		</param>
-		<param name="menuButtonHTML">
-<![CDATA[
-	<a href="#" class="__peweproxy_reporter_button"></a>
-]]>
-		</param>
+		</param>		
 		</parameters>
 </plugin>
