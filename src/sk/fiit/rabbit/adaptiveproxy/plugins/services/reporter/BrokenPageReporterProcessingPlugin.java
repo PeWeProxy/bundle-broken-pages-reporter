@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 
 import sk.fiit.peweproxy.headers.RequestHeader;
-import sk.fiit.peweproxy.headers.ResponseHeader;
 import sk.fiit.peweproxy.messages.HttpMessageFactory;
 import sk.fiit.peweproxy.messages.HttpResponse;
 import sk.fiit.peweproxy.messages.ModifiableHttpRequest;
@@ -26,9 +25,8 @@ import sk.fiit.peweproxy.services.ProxyService;
 import sk.fiit.peweproxy.services.content.ModifiableStringService;
 import sk.fiit.peweproxy.services.content.StringContentService;
 import sk.fiit.rabbit.adaptiveproxy.plugins.servicedefinitions.DatabaseConnectionProviderService;
-import sk.fiit.rabbit.adaptiveproxy.plugins.servicedefinitions.PageInformationProviderService;
 import sk.fiit.rabbit.adaptiveproxy.plugins.services.bubble.BubbleMenuProcessingPlugin;
-import sk.fiit.rabbit.adaptiveproxy.plugins.services.common.SqlUtils;
+import sk.fiit.rabbit.adaptiveproxy.plugins.utils.SqlUtils;
 
 public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlugin {
 	
@@ -152,11 +150,9 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 	@Override
 	public boolean start (PluginProperties props) {
 		this.pacGeneratorUrl = props.getProperty("pacGeneratorUrl");
-		super.start(props);
-		return true;
+		return super.start(props);
 	}
 
-	
 	@Override
 	public void desiredRequestServices (
 			Set<Class<? extends ProxyService>> desiredServices,
@@ -164,13 +160,5 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 		super.desiredRequestServices(desiredServices, clientRQHeader);
 		desiredServices.add(ModifiableStringService.class); //FIXME: toto je docasny hack kvoli late processingu, spravne tu ma byt len StringContentService
 		desiredServices.add(DatabaseConnectionProviderService.class);
-	}
-	
-	@Override
-	public void desiredResponseServices (
-			Set<Class<? extends ProxyService>> desiredServices,
-			ResponseHeader webRPHeader) {
-		super.desiredResponseServices(desiredServices, webRPHeader);
-		desiredServices.add(PageInformationProviderService.class);
 	}
 }
