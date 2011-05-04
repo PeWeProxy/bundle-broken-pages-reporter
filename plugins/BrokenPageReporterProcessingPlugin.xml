@@ -16,7 +16,7 @@
 		<param name="generateResponse">true</param>
 		<param name="defaultVisibility">0</param>
 		<param name="pacGeneratorUrl">${plugins-core:baseurl}/sk/broken_page/generate_pac</param>
-		<param name="scriptUrl">${plugins-core:proxyurl}/FileSender/public/peweproxy_reporter.js</param>
+		<param name="scriptUrl">${plugins-core:assets-path}/peweproxy_reporter.js</param>
 		<param name="buttonHTML"><![CDATA[<a href="#" class="__peweproxy_reporter_button"></a>]]></param>
 		<param name="windowHTML">
 <![CDATA[
@@ -24,7 +24,7 @@
 <style type="text/css">
 			
 			a.__peweproxy_reporter_button{
-				background-image:url("${plugins-core:proxyurl}/FileSender/public/reporterImages/warning.png");
+				background-image:url("${plugins-core:assets-path}/reporterImages/warning.png");
 				color:#2F2F2F;
 				display:block;
 				font-size:10px;
@@ -49,12 +49,12 @@
 			div.__peweproxy_reporter_head{
 				height: 25px;
 				width: 332px;
-				background-image: url('${plugins-core:proxyurl}/FileSender/public/clientBubbleMenuImages/panel_top.png');
+				background-image: url('${plugins-core:assets-path}/clientBubbleMenuImages/panel_top.png');
 				float: left;
 			}
 
 			div.__peweproxy_reporter_body{
-				background-image:url("${plugins-core:proxyurl}/FileSender/public/clientBubbleMenuImages/panel_body.png");
+				background-image:url("${plugins-core:assets-path}/clientBubbleMenuImages/panel_body.png");
 				float:left;
 				padding:0 20px 0 16px;
 				width:296px;
@@ -64,7 +64,7 @@
 			div.__peweproxy_reporter_foot{
 				height: 16px;
 				width: 332px;
-				background-image: url('${plugins-core:proxyurl}/FileSender/public/clientBubbleMenuImages/panel_bottom.png');
+				background-image: url('${plugins-core:assets-path}/clientBubbleMenuImages/panel_bottom.png');
 				float: left;
 			}
 
@@ -75,7 +75,7 @@
 				top: 1px;
 				height: 22px;
 				width: 22px;
-				background-image: url('${plugins-core:proxyurl}/FileSender/public/clientBubbleMenuImages/close_button.png');
+				background-image: url('${plugins-core:assets-path}/clientBubbleMenuImages/close_button.png');
 				background-position: top;
 			}
 			
@@ -94,7 +94,7 @@
 			}
 			
 			div#peweproxy_reporter span.header{
-				background-image:url("${plugins-core:proxyurl}/FileSender/public/reporterImages/warning.png");
+				background-image:url("${plugins-core:assets-path}/reporterImages/warning.png");
 			}
 			
 			div#peweproxy_statusTrue{
