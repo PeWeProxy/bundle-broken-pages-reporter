@@ -6,7 +6,7 @@ peweproxy.register_module('reporer', function($) {
 	
 	
 	$(document).ready(function(){
-	    getReportedStatus();
+		getReportedStatus();
 		$(reporterButonSelector).click(function(){
 			$('#peweproxy_reporter').hide().removeClass('hidden').fadeIn('fast');
 	              
