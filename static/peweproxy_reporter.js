@@ -4,7 +4,27 @@ peweproxy.register_module('reporer', function($) {
 	
 	var peweproxy_url_reporter = 'adaptive-proxy/reporter_call.html'
 	
-	
+	var getReportedStatus = function(){
+		var retVal;
+		__ap_register_callback(function(){
+			retVal = $.ajax({
+				async: false,
+				url: peweproxy_url_reporter+"?action=getReportedStatus",
+				data: {
+					uid: __peweproxy_uid
+				},
+				type: 'POST'
+			}).responseText;
+	          
+			if (retVal == "true"){
+				$('#peweproxy_statusFalse').addClass('hidden');
+				$('#peweproxy_statusFalse').fadeOut('fast');
+				$('#peweproxy_statusTrue').fadeIn('fast');
+			}
+		});
+		return retVal;
+	}
+		
 	$(document).ready(function(){
 		getReportedStatus();
 		$(reporterButonSelector).click(function(){
@@ -39,26 +59,5 @@ peweproxy.register_module('reporer', function($) {
 			return false;
 		});
 	});
-	
-	var getReportedStatus = function(){
-		var retVal;
-		__ap_register_callback(function(){
-			retVal = $.ajax({
-				async: false,
-				url: peweproxy_url_reporter+"?action=getReportedStatus",
-				data: {
-					uid: __peweproxy_uid
-				},
-				type: 'POST'
-			}).responseText;
-	          
-			if (retVal == "true"){
-				$('#peweproxy_statusFalse').addClass('hidden');
-				$('#peweproxy_statusFalse').fadeOut('fast');
-				$('#peweproxy_statusTrue').fadeIn('fast');
-			}
-		});
-		return retVal;
-	}
 
 });
