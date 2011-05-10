@@ -73,7 +73,7 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 		try {
 			stmt = connection.prepareStatement("INSERT INTO `broken_pages` (`url`, `uid`, `timestamp`) VALUES (?, ?, ?);");
 			
-			stmt.setString(1, url);
+			stmt.setString(1, getDomainFromUrl(url));
 			stmt.setString(2, uid);
 			stmt.setString(3, formatedTimeStamp);
 
@@ -97,6 +97,15 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 		} finally {
 			SqlUtils.close(stmt);
 		}
+	}
+	
+	private String getDomainFromUrl(String url) {
+		String domainName;
+		
+		String[] urlPart = url.split("//");		
+		domainName = urlPart[0] + "//" + urlPart[1].substring(0, urlPart[1].indexOf("/"));
+		
+		return domainName;
 	}
 	
 	private String getPageStatus(Connection connection, String url) {
