@@ -75,7 +75,7 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 			
 			stmt = connection.prepareStatement("INSERT INTO `broken_pages` (`url`, `uid`, `timestamp`) VALUES (?, ?, ?);");
 						
-			stmt.setString(1, urlObj.getProtocol()+"://"+urlObj.getHost()+"/");
+			stmt.setString(1, urlObj.getProtocol()+"://"+urlObj.getHost()+"/*");
 			stmt.setString(2, uid);
 			stmt.setString(3, formatedTimeStamp);
 
