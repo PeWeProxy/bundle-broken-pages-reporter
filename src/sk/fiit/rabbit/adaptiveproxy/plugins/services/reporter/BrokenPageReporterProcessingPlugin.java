@@ -71,9 +71,11 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 		String formatedTimeStamp = timestamp.substring(0, timestamp.indexOf("."));
 		
 		try {
-			stmt = connection.prepareStatement("INSERT INTO `broken_pages` (`url`, `uid`, `timestamp`) VALUES (?, ?, ?);");
+			URL urlObj = new URL(url);
 			
-			stmt.setString(1, getDomainFromUrl(url));
+			stmt = connection.prepareStatement("INSERT INTO `broken_pages` (`url`, `uid`, `timestamp`) VALUES (?, ?, ?);");
+						
+			stmt.setString(1, urlObj.getProtocol()+"://"+urlObj.getHost()+"/");
 			stmt.setString(2, uid);
 			stmt.setString(3, formatedTimeStamp);
 
@@ -94,18 +96,12 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 		} catch (SQLException e) {
 			//logger.error("Could not get messageboard count ", e);
 			return "FAIL";
+		} catch (MalformedURLException e) {
+			//logger.error("Malformed URL: "+url);
+			return "FAIL";
 		} finally {
 			SqlUtils.close(stmt);
 		}
-	}
-	
-	private String getDomainFromUrl(String url) {
-		String domainName;
-		
-		String[] urlPart = url.split("//");		
-		domainName = urlPart[0] + "//" + urlPart[1].substring(0, urlPart[1].indexOf("/"));
-		
-		return domainName;
 	}
 	
 	private String getPageStatus(Connection connection, String url) {
