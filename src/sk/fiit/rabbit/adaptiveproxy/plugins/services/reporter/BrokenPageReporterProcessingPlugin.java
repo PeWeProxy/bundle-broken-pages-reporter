@@ -7,9 +7,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +23,7 @@ import sk.fiit.peweproxy.services.content.ModifiableStringService;
 import sk.fiit.peweproxy.services.content.StringContentService;
 import sk.fiit.rabbit.adaptiveproxy.plugins.servicedefinitions.DatabaseConnectionProviderService;
 import sk.fiit.rabbit.adaptiveproxy.plugins.services.bubble.BubbleMenuProcessingPlugin;
+import sk.fiit.rabbit.adaptiveproxy.plugins.utils.JdbcTemplate;
 import sk.fiit.rabbit.adaptiveproxy.plugins.utils.SqlUtils;
 
 public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlugin {
@@ -44,12 +42,13 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 		if(postData != null && request.getServicesHandle().isServiceAvailable(DatabaseConnectionProviderService.class)) {				
 			try {
 				connection = request.getServicesHandle().getService(DatabaseConnectionProviderService.class).getDatabaseConnection();
+				JdbcTemplate jdbc = new JdbcTemplate(connection);
 	
 				if (request.getRequestHeader().getRequestURI().contains("action=reportPage")) {
-					content = this.reportPage(connection, postData.get("uid"), request.getRequestHeader().getField("Referer"));
+					content = this.reportPage(jdbc, postData.get("uid"), request.getRequestHeader().getField("Referer"));
 				}
 				if (request.getRequestHeader().getRequestURI().contains("action=getReportedStatus")) {
-					content = this.getPageStatus(connection, request.getRequestHeader().getField("Referer"));
+					content = this.getPageStatus(jdbc, request.getRequestHeader().getField("Referer"));
 				}
 				
 			} finally {
@@ -64,8 +63,7 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 		return httpResponse;
 	}
 	
-	private String reportPage(Connection connection, String uid, String url) {
-		PreparedStatement stmt = null;
+	private String reportPage(JdbcTemplate jdbc, String uid, String url) {
 		java.util.Date today = new java.util.Date();
 		String timestamp = new Timestamp(today.getTime()).toString();
 		String formatedTimeStamp = timestamp.substring(0, timestamp.indexOf("."));
@@ -73,13 +71,8 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 		try {
 			URL urlObj = new URL(url);
 			
-			stmt = connection.prepareStatement("INSERT INTO `broken_pages` (`url`, `uid`, `timestamp`) VALUES (?, ?, ?);");
-						
-			stmt.setString(1, urlObj.getProtocol()+"://"+urlObj.getHost()+"/*");
-			stmt.setString(2, uid);
-			stmt.setString(3, formatedTimeStamp);
-
-			stmt.execute();
+			jdbc.insert("INSERT INTO broken_pages (url, uid, timestamp) VALUES (?, ?, ?)", 
+					new Object[] { urlObj.getProtocol()+"://"+urlObj.getHost()+"/*", uid, formatedTimeStamp } );
 			
 			URL requestUrl;
 			try {
@@ -90,40 +83,17 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 			} catch (IOException e) {
 				//logger.error("Could send generate pac file request ", e);
 			}
-
 			
-			return "OK";
-		} catch (SQLException e) {
-			//logger.error("Could not get messageboard count ", e);
-			return "FAIL";
 		} catch (MalformedURLException e) {
 			//logger.error("Malformed URL: "+url);
 			return "FAIL";
-		} finally {
-			SqlUtils.close(stmt);
 		}
+		return "OK";
 	}
 	
-	private String getPageStatus(Connection connection, String url) {
-		PreparedStatement stmt = null;
-		int pageStatus = 0;
-		
-		try {
-			stmt = connection.prepareStatement("SELECT COUNT(`id`) FROM `broken_pages` WHERE `url` = ?;");
-			
-			stmt.setString(1, url);
-			stmt.execute();
-			ResultSet rs = stmt.getResultSet();
-			
-			while (rs.next()) {
-				pageStatus = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			//logger.error("Could not get messageboard count ", e);
-			return "FAIL";
-		} finally {
-			SqlUtils.close(stmt);
-		}
+	private String getPageStatus(JdbcTemplate jdbc, String url) {
+		long pageStatus = jdbc.queryFor("SELECT COUNT(*) FROM broken_pages WHERE url = ? LIMIT 1", 
+				new Object[] { url }, Long.class);
 		
 		if (pageStatus > 0) {
 			return "true";
