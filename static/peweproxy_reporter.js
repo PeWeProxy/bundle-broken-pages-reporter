@@ -6,12 +6,12 @@ peweproxy.register_module('reporer', function($) {
 	
 	var getReportedStatus = function(){
 		var retVal;
-		__ap_register_callback(function(){
+		peweproxy.on_uid_ready(function(){
 			retVal = $.ajax({
 				async: false,
 				url: peweproxy_url_reporter+"?action=getReportedStatus",
 				data: {
-					uid: __peweproxy_uid
+					uid: peweproxy.uid
 				},
 				type: 'POST'
 			}).responseText;
@@ -49,9 +49,9 @@ peweproxy.register_module('reporer', function($) {
 	          
 		$('a#peweproxy_reporter_confirm_button').click(function(){   
 				
-			__ap_register_callback(function(){
+			peweproxy.on_uid_ready(function(){
 				$.post(peweproxy_url_reporter+'?action=reportPage', {
-					uid: __peweproxy_uid
+					uid: peweproxy.uid
 				});
 				$('#peweproxy_statusFalse').fadeOut('fast');
 				$('#peweproxy_statusTrue').fadeIn('fast');

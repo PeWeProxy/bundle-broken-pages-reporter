@@ -92,13 +92,18 @@ public class BrokenPageReporterProcessingPlugin extends BubbleMenuProcessingPlug
 	}
 	
 	private String getPageStatus(JdbcTemplate jdbc, String url) {
-		long pageStatus = jdbc.queryFor("SELECT COUNT(*) FROM broken_pages WHERE url = ? LIMIT 1", 
-				new Object[] { url }, Long.class);
-		
-		if (pageStatus > 0) {
+		try {
+			URL urlObj = new URL(url);
+			long pageStatus = jdbc.queryFor("SELECT COUNT(*) FROM broken_pages WHERE url LIKE ? LIMIT 1", 
+					new Object[] { urlObj.getProtocol()+"://"+urlObj.getHost()+"/*" }, Long.class);
+			
+			if (pageStatus > 0) {
+				return "true";
+			} else {
+				return "false";
+			}
+		} catch (MalformedURLException e) {
 			return "true";
-		} else {
-			return "false";
 		}
 	}
 		
