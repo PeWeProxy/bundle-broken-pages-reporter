@@ -18,6 +18,8 @@
 		<param name="pacGeneratorUrl">${plugins-core:baseurl}/sk/broken_page/generate_pac</param>
 		<param name="scriptUrl">${plugins-core:assets-path}/peweproxy_reporter.js</param>
 		<param name="buttonHTML"><![CDATA[<a href="#" class="__peweproxy_reporter_button"></a>]]></param>
+		<param name="preferenceNamespace">brokenPagesReporter</param>
+		<param name="preferenceLabel">Nefunkčné stránky</param>
 		<param name="windowHTML">
 <![CDATA[
 
